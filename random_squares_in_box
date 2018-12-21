@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+    <head> 
+        <title> Random Squares in a Box </title>
+        <link rel = "stylesheet" type = "text/css" href = "COEN60_lab7.css">
+        <meta charset = "UTF-8">
+        <meta name = "description" content = "Page the produces randomly colored squares within a fixed box utilizing JavaScript" />
+    </head>
+
+    <body>
+
+    <div id = "box">
+    <!-- new squares will be inserted here -->
+    </div>
+
+    <button type = "button" onclick = "addSquare()"> Add Square </button>
+    <button type = "button" onclick = "changeColors()"> Change Colors </button>
+    <button type = "button" onclick = "deleteAll()"> Delete All </button>
+
+    <script> //all JS functions
+
+        //generates and returns random HEX code for color
+        function getRandomColor(){ 
+
+            var letters = "0123456789abcdef";
+            var color = "#";
+            for (var i=0; i < 6; i++){
+                color += letters.charAt(Math.floor(Math.random()*letters.length));
+            }
+            return color;
+        }
+
+        //generates and returns random position within box
+        function getRandomPosition(element){  
+
+            var boxWidth = box.offsetWidth; 
+            var boxHeight = box.offsetHeight;
+
+            var squareWidth = element.offsetWidth;
+            var squareHeight = element.offsetHeight;
+
+            //make sure new square stays inside box
+            var maxHeight = boxHeight - squareWidth;
+	        var maxWidth = boxWidth - squareHeight;
+            
+            //random position in box
+	        var squareLeft = Math.floor(Math.random() * maxWidth);
+	        var squareTop = Math.floor(Math.random() * maxHeight);
+
+            return [squareLeft,squareTop];
+        }
+
+        //adds a new square to box and assigns it a random color and position
+        function addSquare(){
+            var newSquare = document.createElement("DIV"); 
+            newSquare.className = "square"; 
+            box.appendChild(newSquare);
+
+            newSquare.style.backgroundColor = getRandomColor(); 
+
+            var pos = getRandomPosition(newSquare); 
+            newSquare.style.position = "absolute";
+            newSquare.style.left = pos[0] + 'px';
+            newSquare.style.top = pos[1] + 'px';
+        }
+
+        //randomizes color of all squares
+        function changeColors(){
+            var squares = document.querySelectorAll(".square");
+            for (var i = 0; i < squares.length; i++) {
+                squares[i].style.backgroundColor = getRandomColor();
+            }
+        }
+
+        //deletes everything in the box
+        function deleteAll(){
+            box.innerHTML = "";
+        }
+    
+    </script>
+    </body>
+</html>
